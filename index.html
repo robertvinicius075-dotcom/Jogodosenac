@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -43,7 +44,6 @@
 
 <main class="max-w-md mx-auto w-full">
 
-  <!-- TELA INICIAL -->
   <section id="screen-home" class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl text-center border border-white/20">
     <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
       <i class="fa-solid fa-gamepad"></i>
@@ -51,7 +51,7 @@
 
     <h2 class="text-xl font-bold">Desafio Ambiental SENAC</h2>
     <p class="text-xs text-slate-500 mt-2 mb-6">
-      Teste seus conhecimentos sobre descarte correto, reciclagem, logística reversa e a Lei nº 12.305/2010.
+      Teste seus conhecimentos sobre logística reversa, legislação ambiental e responsabilidades das empresas.
     </p>
 
     <form id="startForm" class="text-left">
@@ -72,6 +72,7 @@
         <p><i class="fa-solid fa-list-ol text-emerald-600 mr-2"></i>15 perguntas</p>
         <p><i class="fa-solid fa-clock text-emerald-600 mr-2"></i>15 segundos por pergunta</p>
         <p><i class="fa-solid fa-star text-emerald-600 mr-2"></i>100 pontos por acerto</p>
+        <p><i class="fa-solid fa-mobile-screen text-emerald-600 mr-2"></i>Cada equipe joga no próprio celular</p>
       </div>
 
       <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
@@ -80,7 +81,6 @@
     </form>
   </section>
 
-  <!-- TELA DO JOGO -->
   <section id="screen-game" class="hidden bg-white/95 backdrop-blur-md p-5 sm:p-6 rounded-3xl shadow-2xl border border-white/20">
 
     <div class="flex justify-between items-center gap-2 mb-4 bg-slate-100 p-3 rounded-2xl">
@@ -116,14 +116,13 @@
     </p>
   </section>
 
-  <!-- RESULTADO -->
   <section id="screen-result" class="hidden bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl text-center border border-white/20">
     <div class="w-16 h-16 bg-amber-100 text-amber-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
       <i class="fa-solid fa-trophy"></i>
     </div>
 
     <h2 class="text-2xl font-black text-slate-800">Desafio concluído!</h2>
-    <p class="text-sm text-slate-500 mt-2">Parabéns por participar!</p>
+    <p class="text-sm text-slate-500 mt-2">Confira a pontuação da equipe!</p>
     <p id="resultTeamName" class="text-lg font-extrabold text-emerald-700 mt-4 break-words"></p>
 
     <div class="bg-emerald-50 p-5 rounded-2xl my-5">
@@ -161,126 +160,174 @@
 (() => {
   "use strict";
 
+  // As 15 perguntas e o gabarito já estão incluídos neste HTML.
+  // Cada celular calcula a pontuação de forma independente.
+
   const questions = [
     {
-      category: "Coleta Seletiva",
-      question: "Qual é a cor padrão da lixeira destinada ao descarte de PAPEL segundo a Resolução CONAMA nº 275/2001?",
-      options: ["Azul", "Vermelho", "Verde", "Amarelo"],
-      correct: 0
-    },
-    {
-      category: "Coleta Seletiva",
-      question: "A lixeira VERMELHA na coleta seletiva é utilizada para qual tipo de resíduo?",
-      options: ["Vidro", "Plástico", "Metal", "Resíduo orgânico"],
-      correct: 1
-    },
-    {
-      category: "PNRS (Lei nº 12.305/2010)",
-      question: "O que significa a sigla PNRS?",
+      category: "Legislação Ambiental",
+      question: "Qual lei instituiu a Política Nacional de Resíduos Sólidos?",
       options: [
-        "Plano Nacional de Reciclagem Sustentável",
-        "Política Nacional de Resíduos Sólidos",
-        "Programa Nacional para Restauração do Solo",
-        "Projeto Nacional de Reutilização Seletiva"
+        "Lei nº 9.605/1998",
+        "Lei nº 12.305/2010",
+        "Lei nº 8.078/1990",
+        "Lei nº 6.938/1981"
       ],
       correct: 1
     },
     {
       category: "Logística Reversa",
-      question: "Qual destes materiais possui sistema de logística reversa previsto na PNRS?",
-      options: ["Restos de alimentos", "Pilhas e baterias", "Caixas de papelão", "Roupas de algodão"],
-      correct: 1
-    },
-    {
-      category: "Classificação de Resíduos",
-      question: "Na padronização de cores da coleta seletiva, a cor marrom identifica qual tipo de resíduo?",
-      options: ["Metal", "Resíduo orgânico", "Vidro", "Papel"],
-      correct: 1
-    },
-    {
-      category: "PNRS (Conceitos)",
-      question: "Qual é a ordem de prioridade na gestão de resíduos sólidos estabelecida pela PNRS?",
+      question: "Qual é a finalidade da logística reversa?",
       options: [
-        "Reciclar, reutilizar, não gerar e dispor",
-        "Não geração, redução, reutilização, reciclagem, tratamento e disposição final dos rejeitos",
-        "Disposição final, incineração e reciclagem",
-        "Reutilizar, descartar e reciclar"
-      ],
-      correct: 1
-    },
-    {
-      category: "Descarte Especial",
-      question: "Onde devem ser descartados medicamentos vencidos ou em desuso?",
-      options: [
-        "No vaso sanitário ou pia",
-        "No lixo comum de casa",
-        "Em pontos de coleta apropriados, quando disponíveis",
-        "Na lixeira de papel"
+        "Aumentar as vendas",
+        "Eliminar toda coleta",
+        "Retornar produtos ao setor empresarial",
+        "Substituir a coleta pública"
       ],
       correct: 2
     },
     {
-      category: "Resíduos Especiais",
-      question: "Lâmpadas fluorescentes podem conter qual substância tóxica que exige cuidado no descarte?",
-      options: ["Chumbo", "Mercúrio", "Níquel", "Ferro"],
-      correct: 1
-    },
-    {
-      category: "Coleta Seletiva",
-      question: "A lixeira AMARELA destina-se a qual material?",
-      options: ["Plástico", "Vidro", "Metal", "Papel"],
-      correct: 2
-    },
-    {
-      category: "Conceitos PNRS",
-      question: "O que define a responsabilidade compartilhada pelo ciclo de vida dos produtos?",
+      category: "Responsabilidade Empresarial",
+      question: "Quem pode ter obrigações na logística reversa?",
       options: [
-        "Apenas os fabricantes são responsáveis pelo lixo",
-        "Apenas os consumidores devem separar o lixo",
-        "Fabricantes, importadores, distribuidores, comerciantes, consumidores e poder público têm responsabilidades compartilhadas",
-        "Apenas as prefeituras são responsáveis pelos resíduos"
-      ],
-      correct: 2
-    },
-    {
-      category: "Sustentabilidade",
-      question: "O processo biológico de decomposição de matéria orgânica que pode gerar adubo chama-se:",
-      options: ["Incineração", "Compostagem", "Logística reversa", "Reciclagem mecânica"],
-      correct: 1
-    },
-    {
-      category: "Coleta Seletiva",
-      question: "A lixeira VERDE é utilizada para recolher:",
-      options: ["Metal", "Vidro", "Madeira", "Papel"],
-      correct: 1
-    },
-    {
-      category: "Sustentabilidade",
-      question: "Qual dos 5 R's está relacionado a evitar compras e consumos desnecessários?",
-      options: ["Reciclar", "Reutilizar", "Repensar", "Reparar"],
-      correct: 2
-    },
-    {
-      category: "Coleta Seletiva",
-      question: "Na padronização de cores da coleta seletiva, a cor CINZA é destinada a:",
-      options: [
-        "Resíduos gerais não recicláveis, misturados ou contaminados, quando a separação não for possível",
-        "Papel limpo",
-        "Vidro",
-        "Resíduos hospitalares"
+        "Fabricantes e importadores",
+        "Somente os consumidores",
+        "Apenas as prefeituras",
+        "Somente as cooperativas"
       ],
       correct: 0
     },
     {
-      category: "Inovação Ambiental",
-      question: "Qual é um benefício importante da reciclagem realizada por cooperativas?",
+      category: "Produtos Especiais",
+      question: "Qual item possui sistema de logística reversa previsto na PNRS?",
       options: [
-        "Aumentar o uso de aterros sanitários",
-        "Gerar emprego e renda e reduzir a extração de recursos naturais",
-        "Aumentar o consumo de matéria-prima virgem",
-        "Estimular o descarte em lixões"
+        "Restos de frutas",
+        "Guardanapos usados",
+        "Folhas secas",
+        "Pilhas e baterias"
+      ],
+      correct: 3
+    },
+    {
+      category: "PNRS",
+      question: "O que significa a sigla PNRS?",
+      options: [
+        "Plano Nacional de Reciclagem Seletiva",
+        "Política Nacional de Resíduos Sólidos",
+        "Programa Nacional de Reuso Sustentável",
+        "Projeto Nacional de Recuperação do Solo"
       ],
       correct: 1
+    },
+    {
+      category: "Responsabilidade Compartilhada",
+      question: "O que a responsabilidade compartilhada considera?",
+      options: [
+        "Somente o descarte doméstico",
+        "Apenas o transporte do lixo",
+        "As etapas do ciclo de vida dos produtos",
+        "Somente a limpeza das ruas"
+      ],
+      correct: 2
+    },
+    {
+      category: "Obrigações das Empresas",
+      question: "O que uma empresa deve fazer com resíduos sujeitos à logística reversa?",
+      options: [
+        "Encaminhá-los ao sistema adequado",
+        "Misturá-los ao lixo comum",
+        "Descartá-los em terrenos vazios",
+        "Guardá-los sem destinação"
+      ],
+      correct: 0
+    },
+    {
+      category: "Gestão de Resíduos",
+      question: "Qual é a primeira prioridade na gestão de resíduos segundo a PNRS?",
+      options: [
+        "Aterrar",
+        "Incinerar",
+        "Reciclar",
+        "Não gerar"
+      ],
+      correct: 3
+    },
+    {
+      category: "Destinação Ambiental",
+      question: "Qual destino é adequado para rejeitos após o tratamento possível?",
+      options: [
+        "Terrenos baldios",
+        "Aterro sanitário licenciado",
+        "Rios e córregos",
+        "Calçadas públicas"
+      ],
+      correct: 1
+    },
+    {
+      category: "Plano de Resíduos",
+      question: "Para que serve o plano de gerenciamento de resíduos sólidos?",
+      options: [
+        "Planejar a gestão dos resíduos gerados",
+        "Eliminar toda fiscalização ambiental",
+        "Autorizar qualquer tipo de descarte",
+        "Substituir todas as leis ambientais"
+      ],
+      correct: 0
+    },
+    {
+      category: "Embalagens",
+      question: "Qual atitude ajuda uma empresa a reduzir resíduos de embalagens?",
+      options: [
+        "Usar mais material descartável",
+        "Misturar todos os materiais",
+        "Evitar embalagens desnecessárias",
+        "Descartar sobras em terrenos"
+      ],
+      correct: 2
+    },
+    {
+      category: "Pós-consumo",
+      question: "Após o uso, onde devem ser entregados pneus sujeitos à logística reversa?",
+      options: [
+        "Em rios próximos",
+        "Em pontos de recebimento adequados",
+        "Em lixeiras de papel",
+        "Em terrenos sem uso"
+      ],
+      correct: 1
+    },
+    {
+      category: "Responsabilidade Empresarial",
+      question: "Qual é uma prática adequada para o comércio participante da logística reversa?",
+      options: [
+        "Impedir a devolução de produtos",
+        "Misturar resíduos perigosos",
+        "Descartar tudo no lixo comum",
+        "Receber ou orientar a devolução conforme o sistema"
+      ],
+      correct: 3
+    },
+    {
+      category: "Resíduo ou Rejeito",
+      question: "Qual é a diferença entre resíduo e rejeito na PNRS?",
+      options: [
+        "Resíduo pode ser aproveitado; rejeito não tem aproveitamento viável após esgotadas as possibilidades",
+        "Resíduo é sempre perigoso; rejeito é sempre reciclável",
+        "Os dois termos significam exatamente a mesma coisa",
+        "Rejeito é todo material que pode ser reutilizado"
+      ],
+      correct: 0
+    },
+    {
+      category: "Fiscalização e Meio Ambiente",
+      question: "O descarte irregular de resíduos pode gerar qual consequência para uma empresa?",
+      options: [
+        "Isenção de responsabilidades",
+        "Autorização automática para operar",
+        "Sanções previstas na legislação",
+        "Dispensa de controle ambiental"
+      ],
+      correct: 2
     }
   ];
 
@@ -293,7 +340,8 @@
   let errorCount = 0;
   let answered = false;
   let timer = null;
-  let remaining = 15; // Alterado para 15 segundos
+  let remaining = 15;
+  let transitionTimeout = null;
 
   function showScreen(id) {
     ["screen-home", "screen-game", "screen-result"].forEach(screenId => {
@@ -309,21 +357,34 @@
     }
   }
 
+  function clearTransition() {
+    if (transitionTimeout !== null) {
+      clearTimeout(transitionTimeout);
+      transitionTimeout = null;
+    }
+  }
+
   function startGame(name) {
+    clearTimer();
+    clearTransition();
+
     teamName = name.trim();
     currentIndex = 0;
     score = 0;
     correctCount = 0;
     errorCount = 0;
     answered = false;
+
     $("gameTeamName").textContent = teamName;
     $("score").textContent = "0";
+
     showScreen("screen-game");
     renderQuestion();
   }
 
   function renderQuestion() {
     clearTimer();
+    clearTransition();
 
     if (currentIndex >= questions.length) {
       finishGame();
@@ -331,7 +392,8 @@
     }
 
     answered = false;
-    remaining = 15; // Reinicia o cronômetro com 15 segundos
+    remaining = 15;
+
     const q = questions[currentIndex];
 
     $("questionCounter").textContent =
@@ -371,23 +433,27 @@
     timer = setInterval(() => {
       remaining--;
       $("timeLeft").textContent = remaining;
-      $("timerBar").style.width = `${Math.max(0, remaining / 15 * 100)}%`; // Base de cálculo atualizada para 15 segundos
+      $("timerBar").style.width =
+        `${Math.max(0, remaining / 15 * 100)}%`;
 
-      if (remaining <= 5) { // Alerta visual de cor vermelha nos últimos 5 segundos
+      if (remaining <= 5) {
         $("timerBar").className =
           "timer-bar bg-rose-500 h-full rounded-full";
       }
 
       if (remaining <= 0) {
         clearTimer();
+
         if (!answered) {
           answered = true;
           errorCount++;
           disableOptions();
+
           $("feedbackText").textContent =
             "⏰ Tempo esgotado! Vamos para a próxima.";
           $("feedbackText").classList.add("text-rose-600");
-          setTimeout(nextQuestion, 1800);
+
+          transitionTimeout = setTimeout(nextQuestion, 1800);
         }
       }
     }, 1000);
@@ -413,41 +479,57 @@
     if (selectedIndex === q.correct) {
       score += 100;
       correctCount++;
+
       $("score").textContent = score;
       $("feedbackText").textContent = "✅ Resposta correta! +100 pontos";
       $("feedbackText").classList.add("text-emerald-600");
+
       buttons[selectedIndex].classList.remove("border-slate-200");
-      buttons[selectedIndex].classList.add("border-emerald-500", "bg-emerald-50");
+      buttons[selectedIndex].classList.add(
+        "border-emerald-500", "bg-emerald-50"
+      );
     } else {
       errorCount++;
+
       $("feedbackText").textContent = "❌ Resposta incorreta!";
       $("feedbackText").classList.add("text-rose-600");
+
       buttons[selectedIndex].classList.remove("border-slate-200");
-      buttons[selectedIndex].classList.add("border-rose-400", "bg-rose-50");
+      buttons[selectedIndex].classList.add(
+        "border-rose-400", "bg-rose-50"
+      );
+
       buttons[q.correct].classList.remove("border-slate-200");
-      buttons[q.correct].classList.add("border-emerald-500", "bg-emerald-50");
+      buttons[q.correct].classList.add(
+        "border-emerald-500", "bg-emerald-50"
+      );
     }
 
-    setTimeout(nextQuestion, 1800);
+    transitionTimeout = setTimeout(nextQuestion, 1800);
   }
 
   function nextQuestion() {
     clearTimer();
+    clearTransition();
     currentIndex++;
     renderQuestion();
   }
 
   function finishGame() {
     clearTimer();
+    clearTransition();
+
     $("resultTeamName").textContent = teamName;
     $("finalScore").textContent = score;
     $("finalCorrect").textContent = correctCount;
     $("finalErrors").textContent = errorCount;
+
     showScreen("screen-result");
   }
 
   $("startForm").addEventListener("submit", event => {
     event.preventDefault();
+
     const name = $("teamName").value.trim();
 
     if (!name) {
@@ -464,6 +546,8 @@
 
   $("changeTeamButton").addEventListener("click", () => {
     clearTimer();
+    clearTransition();
+
     $("teamName").value = teamName;
     showScreen("screen-home");
     $("teamName").focus();
