@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#065f46">
+  <title>Para Onde Vai Esse Resíduo? – SENAC</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Poppins', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body { -webkit-tap-highlight-color: transparent; }
+    .timer-bar { transition: width 1s linear; }
+    button:disabled { opacity: .65; cursor: not-allowed; }
+    .answer-btn { min-height: 56px; }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-green-900 via-emerald-800 to-teal-900 min-h-screen text-slate-800 font-sans p-3 sm:p-6">
+
+<header class="max-w-4xl mx-auto w-full text-center mb-5">
+  <div class="flex items-center justify-center gap-2 text-emerald-300 font-semibold text-xs sm:text-sm tracking-wider uppercase mb-2">
+    <i class="fa-solid fa-leaf"></i>
+    <span>SENAC • Especialistas Ambientais &amp; PNRS</span>
+  </div>
+  <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
+    ♻️ Para Onde Vai Esse Resíduo?
+  </h1>
+  <p class="text-emerald-100 text-xs mt-2">Desafio de Gestão de Resíduos e Sustentabilidade</p>
+</header>
+
+<main class="max-w-md mx-auto w-full">
+
+  <!-- TELA INICIAL -->
+  <section id="screen-home" class="bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl text-center border border-white/20">
+    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-inner">
+      <i class="fa-solid fa-gamepad"></i>
+    </div>
+
+    <h2 class="text-xl font-bold">Desafio Ambiental SENAC</h2>
+    <p class="text-xs text-slate-500 mt-2 mb-6">
+      Teste seus conhecimentos sobre descarte correto, reciclagem, logística reversa e a Lei nº 12.305/2010.
+    </p>
+
+    <form id="startForm" class="text-left">
+      <label for="teamName" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+        Nome da equipe
+      </label>
+      <input
+        id="teamName"
+        type="text"
+        maxlength="35"
+        required
+        autocomplete="off"
+        placeholder="Ex.: Equipe Verde"
+        class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-emerald-500 focus:outline-none mb-4"
+      >
+
+      <div class="bg-emerald-50 rounded-xl p-4 mb-5 text-xs text-slate-600 space-y-2">
+        <p><i class="fa-solid fa-list-ol text-emerald-600 mr-2"></i>15 perguntas</p>
+        <p><i class="fa-solid fa-clock text-emerald-600 mr-2"></i>15 segundos por pergunta</p>
+        <p><i class="fa-solid fa-star text-emerald-600 mr-2"></i>100 pontos por acerto</p>
+      </div>
+
+      <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
+        <i class="fa-solid fa-play mr-2"></i> Começar desafio
+      </button>
+    </form>
+  </section>
+
+  <!-- TELA DO JOGO -->
+  <section id="screen-game" class="hidden bg-white/95 backdrop-blur-md p-5 sm:p-6 rounded-3xl shadow-2xl border border-white/20">
+
+    <div class="flex justify-between items-center gap-2 mb-4 bg-slate-100 p-3 rounded-2xl">
+      <div class="min-w-0">
+        <span class="text-[10px] font-bold text-slate-500 block uppercase">Equipe</span>
+        <span id="gameTeamName" class="font-bold text-emerald-700 text-sm break-words">Equipe Verde</span>
+      </div>
+      <div class="text-right shrink-0">
+        <span class="text-[10px] font-bold text-slate-500 block uppercase">Pontuação</span>
+        <span id="score" class="text-2xl font-black text-emerald-600">0</span>
+      </div>
+    </div>
+
+    <div class="flex justify-between items-center text-xs font-bold mb-2">
+      <span id="questionCounter" class="text-slate-500">Pergunta 1/15</span>
+      <span class="text-emerald-700"><i class="fa-solid fa-clock mr-1"></i><span id="timeLeft">15</span>s</span>
+    </div>
+
+    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden mb-5">
+      <div id="timerBar" class="timer-bar bg-emerald-500 h-full rounded-full" style="width:100%"></div>
+    </div>
+
+    <div class="mb-6">
+      <span id="questionCategory" class="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-md">Categoria</span>
+      <h3 id="questionText" class="text-base font-bold text-slate-800 mt-3 leading-relaxed">Pergunta</h3>
+    </div>
+
+    <div id="optionsContainer" class="space-y-3"></div>
+    <div id="feedbackText" role="status" aria-live="polite" class="mt-4 text-sm font-bold text-center min-h-6"></div>
+
+    <p class="text-[10px] text-slate-400 text-center mt-4">
+      Escolha uma alternativa. Depois de responder, aguarde a próxima pergunta.
+    </p>
+  </section>
+
+  <!-- RESULTADO -->
+  <section id="screen-result" class="hidden bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl text-center border border-white/20">
+    <div class="w-16 h-16 bg-amber-100 text-amber-500 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">
+      <i class="fa-solid fa-trophy"></i>
+    </div>
+
+    <h2 class="text-2xl font-black text-slate-800">Desafio concluído!</h2>
+    <p class="text-sm text-slate-500 mt-2">Parabéns por participar!</p>
+    <p id="resultTeamName" class="text-lg font-extrabold text-emerald-700 mt-4 break-words"></p>
+
+    <div class="bg-emerald-50 p-5 rounded-2xl my-5">
+      <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Pontuação final</p>
+      <p class="text-5xl font-black text-emerald-600 my-2"><span id="finalScore">0</span></p>
+      <p class="text-xs text-slate-500">de 1500 pontos possíveis</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-5">
+      <div class="bg-slate-50 rounded-xl p-3">
+        <p class="text-xs text-slate-500">Acertos</p>
+        <p id="finalCorrect" class="text-xl font-bold text-emerald-600">0</p>
+      </div>
+      <div class="bg-slate-50 rounded-xl p-3">
+        <p class="text-xs text-slate-500">Erros / tempo</p>
+        <p id="finalErrors" class="text-xl font-bold text-rose-500">0</p>
+      </div>
+    </div>
+
+    <button id="restartButton" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition">
+      <i class="fa-solid fa-rotate-right mr-2"></i> Jogar novamente
+    </button>
+
+    <button id="changeTeamButton" class="w-full mt-3 border-2 border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 rounded-xl transition">
+      Trocar nome da equipe
+    </button>
+  </section>
+</main>
+
+<footer class="max-w-4xl mx-auto w-full text-center mt-6 text-xs text-emerald-200/80">
+  Desenvolvido para as turmas de Aprendizagem do <strong>SENAC</strong>.
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const questions = [
+    {
+      category: "Coleta Seletiva",
+      question: "Qual é a cor padrão da lixeira destinada ao descarte de PAPEL segundo a Resolução CONAMA nº 275/2001?",
+      options: ["Azul", "Vermelho", "Verde", "Amarelo"],
+      correct: 0
+    },
+    {
+      category: "Coleta Seletiva",
+      question: "A lixeira VERMELHA na coleta seletiva é utilizada para qual tipo de resíduo?",
+      options: ["Vidro", "Plástico", "Metal", "Resíduo orgânico"],
+      correct: 1
+    },
+    {
+      category: "PNRS (Lei nº 12.305/2010)",
+      question: "O que significa a sigla PNRS?",
+      options: [
+        "Plano Nacional de Reciclagem Sustentável",
+        "Política Nacional de Resíduos Sólidos",
+        "Programa Nacional para Restauração do Solo",
+        "Projeto Nacional de Reutilização Seletiva"
+      ],
+      correct: 1
+    },
+    {
+      category: "Logística Reversa",
+      question: "Qual destes materiais possui sistema de logística reversa previsto na PNRS?",
+      options: ["Restos de alimentos", "Pilhas e baterias", "Caixas de papelão", "Roupas de algodão"],
+      correct: 1
+    },
+    {
+      category: "Classificação de Resíduos",
+      question: "Na padronização de cores da coleta seletiva, a cor marrom identifica qual tipo de resíduo?",
+      options: ["Metal", "Resíduo orgânico", "Vidro", "Papel"],
+      correct: 1
+    },
+    {
+      category: "PNRS (Conceitos)",
+      question: "Qual é a ordem de prioridade na gestão de resíduos sólidos estabelecida pela PNRS?",
+      options: [
+        "Reciclar, reutilizar, não gerar e dispor",
+        "Não geração, redução, reutilização, reciclagem, tratamento e disposição final dos rejeitos",
+        "Disposição final, incineração e reciclagem",
+        "Reutilizar, descartar e reciclar"
+      ],
+      correct: 1
+    },
+    {
+      category: "Descarte Especial",
+      question: "Onde devem ser descartados medicamentos vencidos ou em desuso?",
+      options: [
+        "No vaso sanitário ou pia",
+        "No lixo comum de casa",
+        "Em pontos de coleta apropriados, quando disponíveis",
+        "Na lixeira de papel"
+      ],
+      correct: 2
+    },
+    {
+      category: "Resíduos Especiais",
+      question: "Lâmpadas fluorescentes podem conter qual substância tóxica que exige cuidado no descarte?",
+      options: ["Chumbo", "Mercúrio", "Níquel", "Ferro"],
+      correct: 1
+    },
+    {
+      category: "Coleta Seletiva",
+      question: "A lixeira AMARELA destina-se a qual material?",
+      options: ["Plástico", "Vidro", "Metal", "Papel"],
+      correct: 2
+    },
+    {
+      category: "Conceitos PNRS",
+      question: "O que define a responsabilidade compartilhada pelo ciclo de vida dos produtos?",
+      options: [
+        "Apenas os fabricantes são responsáveis pelo lixo",
+        "Apenas os consumidores devem separar o lixo",
+        "Fabricantes, importadores, distribuidores, comerciantes, consumidores e poder público têm responsabilidades compartilhadas",
+        "Apenas as prefeituras são responsáveis pelos resíduos"
+      ],
+      correct: 2
+    },
+    {
+      category: "Sustentabilidade",
+      question: "O processo biológico de decomposição de matéria orgânica que pode gerar adubo chama-se:",
+      options: ["Incineração", "Compostagem", "Logística reversa", "Reciclagem mecânica"],
+      correct: 1
+    },
+    {
+      category: "Coleta Seletiva",
+      question: "A lixeira VERDE é utilizada para recolher:",
+      options: ["Metal", "Vidro", "Madeira", "Papel"],
+      correct: 1
+    },
+    {
+      category: "Sustentabilidade",
+      question: "Qual dos 5 R's está relacionado a evitar compras e consumos desnecessários?",
+      options: ["Reciclar", "Reutilizar", "Repensar", "Reparar"],
+      correct: 2
+    },
+    {
+      category: "Coleta Seletiva",
+      question: "Na padronização de cores da coleta seletiva, a cor CINZA é destinada a:",
+      options: [
+        "Resíduos gerais não recicláveis, misturados ou contaminados, quando a separação não for possível",
+        "Papel limpo",
+        "Vidro",
+        "Resíduos hospitalares"
+      ],
+      correct: 0
+    },
+    {
+      category: "Inovação Ambiental",
+      question: "Qual é um benefício importante da reciclagem realizada por cooperativas?",
+      options: [
+        "Aumentar o uso de aterros sanitários",
+        "Gerar emprego e renda e reduzir a extração de recursos naturais",
+        "Aumentar o consumo de matéria-prima virgem",
+        "Estimular o descarte em lixões"
+      ],
+      correct: 1
+    }
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  let teamName = "";
+  let currentIndex = 0;
+  let score = 0;
+  let correctCount = 0;
+  let errorCount = 0;
+  let answered = false;
+  let timer = null;
+  let remaining = 15; // Alterado para 15 segundos
+
+  function showScreen(id) {
+    ["screen-home", "screen-game", "screen-result"].forEach(screenId => {
+      $(screenId).classList.toggle("hidden", screenId !== id);
+    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function clearTimer() {
+    if (timer !== null) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  function startGame(name) {
+    teamName = name.trim();
+    currentIndex = 0;
+    score = 0;
+    correctCount = 0;
+    errorCount = 0;
+    answered = false;
+    $("gameTeamName").textContent = teamName;
+    $("score").textContent = "0";
+    showScreen("screen-game");
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    clearTimer();
+
+    if (currentIndex >= questions.length) {
+      finishGame();
+      return;
+    }
+
+    answered = false;
+    remaining = 15; // Reinicia o cronômetro com 15 segundos
+    const q = questions[currentIndex];
+
+    $("questionCounter").textContent =
+      `Pergunta ${currentIndex + 1}/${questions.length}`;
+    $("timeLeft").textContent = remaining;
+    $("timerBar").style.width = "100%";
+    $("timerBar").className =
+      "timer-bar bg-emerald-500 h-full rounded-full";
+    $("questionCategory").textContent = q.category;
+    $("questionText").textContent = q.question;
+    $("feedbackText").textContent = "";
+    $("feedbackText").className =
+      "mt-4 text-sm font-bold text-center min-h-6";
+
+    const container = $("optionsContainer");
+    container.replaceChildren();
+
+    q.options.forEach((option, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className =
+        "answer-btn w-full text-left p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 font-medium text-sm text-slate-700 transition flex items-center gap-3";
+
+      const letter = document.createElement("span");
+      letter.className =
+        "w-7 h-7 shrink-0 rounded-full bg-slate-100 font-bold text-slate-600 flex items-center justify-center text-xs";
+      letter.textContent = String.fromCharCode(65 + index);
+
+      const label = document.createElement("span");
+      label.textContent = option;
+
+      button.append(letter, label);
+      button.addEventListener("click", () => answerQuestion(index));
+      container.appendChild(button);
+    });
+
+    timer = setInterval(() => {
+      remaining--;
+      $("timeLeft").textContent = remaining;
+      $("timerBar").style.width = `${Math.max(0, remaining / 15 * 100)}%`; // Base de cálculo atualizada para 15 segundos
+
+      if (remaining <= 5) { // Alerta visual de cor vermelha nos últimos 5 segundos
+        $("timerBar").className =
+          "timer-bar bg-rose-500 h-full rounded-full";
+      }
+
+      if (remaining <= 0) {
+        clearTimer();
+        if (!answered) {
+          answered = true;
+          errorCount++;
+          disableOptions();
+          $("feedbackText").textContent =
+            "⏰ Tempo esgotado! Vamos para a próxima.";
+          $("feedbackText").classList.add("text-rose-600");
+          setTimeout(nextQuestion, 1800);
+        }
+      }
+    }, 1000);
+  }
+
+  function disableOptions() {
+    document.querySelectorAll("#optionsContainer button").forEach(button => {
+      button.disabled = true;
+      button.classList.add("opacity-60");
+    });
+  }
+
+  function answerQuestion(selectedIndex) {
+    if (answered) return;
+
+    answered = true;
+    clearTimer();
+    disableOptions();
+
+    const q = questions[currentIndex];
+    const buttons = document.querySelectorAll("#optionsContainer button");
+
+    if (selectedIndex === q.correct) {
+      score += 100;
+      correctCount++;
+      $("score").textContent = score;
+      $("feedbackText").textContent = "✅ Resposta correta! +100 pontos";
+      $("feedbackText").classList.add("text-emerald-600");
+      buttons[selectedIndex].classList.remove("border-slate-200");
+      buttons[selectedIndex].classList.add("border-emerald-500", "bg-emerald-50");
+    } else {
+      errorCount++;
+      $("feedbackText").textContent = "❌ Resposta incorreta!";
+      $("feedbackText").classList.add("text-rose-600");
+      buttons[selectedIndex].classList.remove("border-slate-200");
+      buttons[selectedIndex].classList.add("border-rose-400", "bg-rose-50");
+      buttons[q.correct].classList.remove("border-slate-200");
+      buttons[q.correct].classList.add("border-emerald-500", "bg-emerald-50");
+    }
+
+    setTimeout(nextQuestion, 1800);
+  }
+
+  function nextQuestion() {
+    clearTimer();
+    currentIndex++;
+    renderQuestion();
+  }
+
+  function finishGame() {
+    clearTimer();
+    $("resultTeamName").textContent = teamName;
+    $("finalScore").textContent = score;
+    $("finalCorrect").textContent = correctCount;
+    $("finalErrors").textContent = errorCount;
+    showScreen("screen-result");
+  }
+
+  $("startForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const name = $("teamName").value.trim();
+
+    if (!name) {
+      $("teamName").focus();
+      return;
+    }
+
+    startGame(name);
+  });
+
+  $("restartButton").addEventListener("click", () => {
+    startGame(teamName);
+  });
+
+  $("changeTeamButton").addEventListener("click", () => {
+    clearTimer();
+    $("teamName").value = teamName;
+    showScreen("screen-home");
+    $("teamName").focus();
+  });
+})();
+</script>
+
+</body>
+</html>
